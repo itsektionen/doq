@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/static/font/geist.ttf"), format("truetype");
+}
+
+html,
+body {
+  background-color: black;
+  color: white;
+  min-height: 100svh;
+  margin: 0;
+  padding: 0;
+  font-family: "Geist";
+}
+
+main {
+  min-height: 100svh;
+}
+
+.container {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100svh;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#logo {
+  user-select: none;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
