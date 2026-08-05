@@ -5,6 +5,7 @@
 @font-face {
   font-family: "Geist";
   src: url("/static/font/geist.ttf"), format("truetype");
+  font-display: swap;
 }
 
 html,
@@ -14,7 +15,11 @@ body {
   min-height: 100svh;
   margin: 0;
   padding: 0;
-  font-family: "Geist";
+  font-family:
+    "Geist",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 main {
