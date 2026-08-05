@@ -5,11 +5,20 @@ import (
 	"embed"
 	"html/template"
 	"log"
+	"math/rand/v2"
 	"net/http"
 	"strings"
 
 	"github.com/itsektionen/doq/app/static"
 )
+
+var quotes = []string{
+	"Carpe Diem",
+	"Pics or it didn't happen",
+	"It's DOQing time",
+	"Sorry, DOQtor's orders",
+	"DOQ DOQ DOQ",
+}
 
 //go:embed templates
 var templateFS embed.FS
@@ -20,6 +29,7 @@ type Pages struct {
 
 type PageData struct {
 	Title string
+	Quote string
 	Data  any
 }
 
@@ -64,11 +74,14 @@ func (p Pages) render(w http.ResponseWriter, pageFile string, data any, statusCo
 		}
 	case string:
 		if v != "" {
-			pageData.Title = v
+			pageData.Quote = v
 		}
 	case map[string]any:
 		if title, ok := v["Title"].(string); ok && title != "" {
 			pageData.Title = title
+		}
+		if quote, ok := v["Quote"].(string); ok && quote != "" {
+			pageData.Quote = quote
 		}
 		pageData.Data = v
 	default:
@@ -88,7 +101,11 @@ func (p Pages) render(w http.ResponseWriter, pageFile string, data any, statusCo
 }
 
 func (p Pages) HandleIndex(w http.ResponseWriter, r *http.Request) {
-	p.render(w, "index.html", nil)
+	randomQuote := quotes[rand.N(len(quotes))]
+
+	p.render(w, "index.html", PageData{
+		Quote: randomQuote,
+	})
 }
 
 func (p Pages) HandleStatic() http.Handler {
