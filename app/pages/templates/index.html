@@ -1,12 +1,14 @@
 {{ define "content" }}
 <div class="container">
-  <img
-    id="logo"
-    draggable="false"
-    width="180"
-    height="111"
-    src="/static/img/doq.png"
-  />
-  <p>{{ .Quote }}</p>
+  <a href="/">
+    <img
+      id="logo"
+      draggable="false"
+      width="180"
+      height="111"
+      src="/static/img/doq.png"
+    />
+  </a>
+  <p id="quote">{{ .Quote }}</p>
 </div>
 {{ end }}

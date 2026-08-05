@@ -1,12 +1,17 @@
 {{ define "content" }}
-<div class="container">
-  <img
-    id="logo"
-    draggable="false"
-    width="180"
-    height="111"
-    src="/static/img/doq.png"
-  />
-  <p>404 - Not Found</p>
-</div>
+<section class="container">
+  <a href="/">
+    <img
+      id="logo"
+      draggable="false"
+      width="180"
+      height="111"
+      src="/static/img/doq.png"
+    />
+  </a>
+  <div>
+    <p id="error-code">404</p>
+    <p id="error-description">Not Found</p>
+  </div>
+</section>
 {{ end }}
