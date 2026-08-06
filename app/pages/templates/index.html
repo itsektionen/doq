@@ -1,15 +1,18 @@
 {{ define "content" }}
 <div class="container">
-  <a hx-boost="true" href="/">
-    <img
-      id="logo"
-      draggable="false"
-      width="180"
-      height="111"
-      src="/static/img/doq.png"
-    />
-  </a>
-  <p id="quote">{{ .Quote }}</p>
-  <a class="link" href="/camera"> DOQ it up </a>
+  <div class="content-body">
+    <a hx-boost="true" href="/">
+      <img
+        id="logo"
+        draggable="false"
+        width="180"
+        height="111"
+        src="/static/img/doq.png"
+      />
+    </a>
+    <p id="quote">{{ .Quote }}</p>
+    <a class="link-btn" href="/camera"> DOQ it up </a>
+  </div>
+  {{ template "layouts/fragments/footer" . }}
 </div>
 {{ end }}

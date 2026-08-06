@@ -41,6 +41,19 @@ main {
   box-sizing: border-box;
   flex-direction: column;
   gap: 2rem;
+  position: relative;
+}
+
+.content-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+footer {
+  position: absolute;
+  bottom: 2rem;
 }
 
 #logo {
@@ -84,6 +97,26 @@ main {
 }
 
 .link {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  color: var(--foreground);
+  text-underline-offset: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+footer {
+  margin-top: auto;
+  & > a {
+    color: var(--muted-foreground) !important;
+  }
+}
+
+.link-btn {
+  user-select: none;
   text-decoration: none;
   background-color: var(--foreground);
   padding: 0.5rem 1rem 0.5rem 1rem;
@@ -262,4 +295,19 @@ main {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+.privacy {
+  padding: 2rem;
+  max-width: 65ch;
+  margin-inline: auto;
+}
+
+.muted {
+  color: var(--muted-foreground);
+}
+
+::selection {
+  color: var(--background);
+  background-color: var(--foreground);
 }
