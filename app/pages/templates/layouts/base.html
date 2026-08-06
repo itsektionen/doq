@@ -28,8 +28,10 @@
       crossorigin
     />
     <link rel="stylesheet" type="text/css" href="/static/style/index.css" />
+    <script src="/static/vendor/htmx.min.js"></script>
   </head>
   <body>
+    {{ template "notifications" . }}
     <main>{{block "content" .}}{{end}}</main>
   </body>
 </html>

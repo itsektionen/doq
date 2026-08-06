@@ -34,11 +34,20 @@ type PageData struct {
 }
 
 func New() Pages {
-	base, err := template.ParseFS(templateFS, "templates/layouts/*.html")
+	base, err := template.ParseFS(
+		templateFS,
+		"templates/layouts/*.html",
+		"templates/notifications/*.html",
+		"templates/notifications/partials/*.html",
+	)
 	if err != nil {
 		log.Fatalf("failed to parse base layouts: %v", err)
 	}
 	return Pages{base: base}
+}
+
+func (p Pages) Template() *template.Template {
+	return p.base
 }
 
 func (p Pages) render(w http.ResponseWriter, pageFile string, data any, statusCode ...int) {
@@ -127,4 +136,8 @@ func (p Pages) HandleNotFound(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	p.render(w, "404.html", PageData{Title: "404 - Not Found"}, http.StatusNotFound)
+}
+
+func (p Pages) HandleCamera(w http.ResponseWriter, r *http.Request) {
+	p.render(w, "camera.html", nil)
 }

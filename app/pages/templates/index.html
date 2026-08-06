@@ -1,6 +1,6 @@
 {{ define "content" }}
 <div class="container">
-  <a href="/">
+  <a hx-boost="true" href="/">
     <img
       id="logo"
       draggable="false"
@@ -10,5 +10,6 @@
     />
   </a>
   <p id="quote">{{ .Quote }}</p>
+  <a class="link" href="/camera"> DOQ it up </a>
 </div>
 {{ end }}

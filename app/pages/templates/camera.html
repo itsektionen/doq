@@ -1,0 +1,118 @@
+{{ define "content" }}
+<div id="camera-wrapper">
+  <a href="/">
+    <img
+      id="logo"
+      draggable="false"
+      width="90"
+      height="56"
+      src="/static/img/doq.png"
+    />
+  </a>
+  <div id="camera"></div>
+
+  <!-- Hidden canvas used to capture the image frame -->
+  <canvas id="photo-canvas" style="display: none"></canvas>
+
+  <!-- HTMX Form or Container -->
+  <form
+    id="photo-form"
+    hx-post="/upload-photo"
+    hx-target="#result"
+    hx-swap="innerHTML"
+    hx-encoding="multipart/form-data"
+  >
+    <!-- Hidden input to store image data before sending -->
+    <input type="hidden" name="photo" id="photo-data" />
+
+    <button
+      id="camera-button"
+      type="button"
+      onclick="captureAndSend()"
+    ></button>
+  </form>
+
+  <div id="result"></div>
+  <button
+    id="camera-switch"
+    type="button"
+    onclick="switchCamera()"
+    aria-label="Switch camera"
+  >
+    <img src="/static/icon/loop-right.svg" width="24" height="24" />
+  </button>
+</div>
+
+<script>
+  let currentStream = null;
+  let currentFacingMode = "user";
+
+  async function startCamera() {
+    const cameraContainer = document.getElementById("camera");
+
+    if (currentStream) {
+      currentStream.getTracks().forEach((track) => track.stop());
+      currentStream = null;
+    }
+
+    try {
+      currentStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: currentFacingMode,
+        },
+        audio: false,
+      });
+
+      const videoElement = document.createElement("video");
+      videoElement.id = "camera-feed";
+      videoElement.srcObject = currentStream;
+      videoElement.autoplay = true;
+      videoElement.playsInline = true;
+
+      if (currentFacingMode === "environment") {
+        videoElement.classList.add("environment");
+      }
+
+      cameraContainer.innerHTML = "";
+      cameraContainer.appendChild(videoElement);
+    } catch (error) {
+      console.error("Camera access error:", error);
+      cameraContainer.innerText =
+        "Unable to access camera. Please check permissions.";
+    }
+  }
+
+  async function switchCamera() {
+    currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+    await startCamera();
+  }
+
+  function captureAndSend() {
+    const video = document.getElementById("camera-feed");
+    const canvas = document.getElementById("photo-canvas");
+    const photoInput = document.getElementById("photo-data");
+    const form = document.getElementById("photo-form");
+
+    if (!video) return;
+
+    // Set canvas dimensions to match video stream size
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+
+    // Draw the current video frame onto the canvas
+    const context = canvas.getContext("2d");
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Convert canvas image to Base64 Data URL (JPEG format)
+    const imageDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+
+    // Set value into hidden input and trigger HTMX request
+    photoInput.value = imageDataUrl;
+    htmx.trigger(form, "submit");
+  }
+
+  document.addEventListener("DOMContentLoaded", startCamera);
+</script>
+{{ end }}
