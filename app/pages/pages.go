@@ -37,6 +37,7 @@ func New() Pages {
 	base, err := template.ParseFS(
 		templateFS,
 		"templates/layouts/*.html",
+		"templates/layouts/fragments/*.html",
 		"templates/notifications/*.html",
 		"templates/notifications/partials/*.html",
 	)
@@ -140,4 +141,10 @@ func (p Pages) HandleNotFound(w http.ResponseWriter, r *http.Request) {
 
 func (p Pages) HandleCamera(w http.ResponseWriter, r *http.Request) {
 	p.render(w, "camera.html", nil)
+}
+
+func (p Pages) HandlePrivacy(w http.ResponseWriter, r *http.Request) {
+	p.render(w, "privacy.html", PageData{
+		Title: "Privacy Policy",
+	})
 }

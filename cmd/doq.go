@@ -25,6 +25,7 @@ func main() {
 	mux.HandleFunc("GET /{$}", p.HandleIndex)
 	mux.HandleFunc("GET /camera", p.HandleCamera)
 	mux.HandleFunc("POST /upload-photo", photoHandler.HandleUploadPhoto)
+	mux.HandleFunc("GET /privacy", p.HandlePrivacy)
 	mux.HandleFunc("GET /", p.HandleNotFound)
 	mux.HandleFunc("/", p.HandleNotFound)
 
