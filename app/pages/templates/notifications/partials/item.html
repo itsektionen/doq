@@ -1,0 +1,21 @@
+{{ define "notification" }}
+<div
+  class="notification notification-{{ if .Type }}{{ .Type }}{{ else }}info{{ end }}"
+  hx-on:htmx:load="setTimeout(() => this.remove(), {{ if .TimeoutMS }}{{ .TimeoutMS }}{{ else }}5000{{ end }})"
+>
+  <div class="notification-content">
+    {{ if .Title }}<strong class="notification-title">{{ .Title }}</strong>{{
+    end }} {{ if .Message }}
+    <p class="notification-message">{{ .Message }}</p>
+    {{ end }}
+  </div>
+  <button
+    type="button"
+    class="notification-close"
+    onclick="this.closest('.notification').remove()"
+    aria-label="Close notification"
+  >
+    &times;
+  </button>
+</div>
+{{ end }}

@@ -68,3 +68,198 @@ main {
   color: var(--foreground);
   text-align: center;
 }
+
+#camera-wrapper {
+  height: 100svh;
+  width: 100svw;
+  padding: 1rem;
+  position: relative;
+
+  #logo {
+    position: absolute;
+    top: 4rem;
+    left: calc(50% - 45px);
+    z-index: 10;
+  }
+}
+
+.link {
+  text-decoration: none;
+  background-color: var(--foreground);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  color: var(--background);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+#camera {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #313131;
+  overflow: hidden;
+  border-radius: 2rem;
+}
+
+#camera video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+#camera video.environment {
+  -webkit-transform: none;
+  transform: none;
+}
+
+#camera-button {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 100%;
+  background-color: var(--foreground);
+  position: absolute;
+  bottom: 4rem;
+  left: calc(50% - 2rem);
+  border: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+#camera-switch {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--foreground);
+  position: absolute;
+  bottom: 4.5rem;
+  left: calc(50% + 3.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+#camera-switch:active {
+  transform: scale(0.95);
+}
+
+#camera-switch:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Notifications Container & Toast Styles */
+#notifications {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 24rem;
+  width: calc(100vw - 3rem);
+  pointer-events: none;
+}
+
+.notification {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 1.5rem;
+  background: var(--background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--foreground);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  animation: notification-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.notification-success {
+  .notification-title {
+    color: #22c55e;
+  }
+}
+
+.notification-error {
+  .notification-title {
+    color: #ef4444;
+  }
+}
+
+.notification-warning {
+  .notification-title {
+    color: #f59e0b;
+  }
+}
+
+.notification-warning {
+  .notification-title {
+    color: #3b82f6;
+  }
+}
+
+.notification-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.notification-title {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.notification-message {
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.25rem;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.notification-close:hover {
+  opacity: 1;
+  color: var(--foreground);
+}
+
+@keyframes notification-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
