@@ -2,26 +2,30 @@
 <section class="content">
   <a hx-boost="true" href="/">
     <img
-      style="margin-bottom: 4rem"
+      style="margin-bottom: 1rem"
       id="logo"
       alt="DOQ"
       draggable="false"
-      width="180"
-      height="111"
+      width="72"
+      height="44"
       src="/static/img/doq.png"
     />
   </a>
-  <p>
-    DOQ makes sure that the Reception is immortalized and remembered by taking
-    photos.
+  <p class="muted">
+    <b style="color: var(--foreground)">DOQ</b> makes sure that the Reception is
+    immortalized and remembered by taking photos.
   </p>
-  <p>It is a noble mission, and we hereby invite <b>you</b> to help us out.</p>
-  <p>
+  <p class="muted">
+    It is a noble mission, and we hereby invite
+    <b style="color: var(--foreground)">you</b> to help us out.
+  </p>
+  <p class="muted">
     On this site you&apos;ll find a camera which you can use to capture moments
-    during the Reception. The photos are then sent to DOQ, who will review them.
-    You can read more about this by clicking the privacy link in the footer.
+    during the Reception. The photos are then sent to
+    <b style="color: var(--foreground)">DOQ</b>, who will review them. You can
+    read more about this by clicking the privacy link in the footer.
   </p>
-  <p>Click the button below to get started!</p>
+  <p class="muted">Click the button below to get started!</p>
   <a id="camera-link" class="link-btn" href="/camera">{{ .Quote }}</a>
 </section>
 {{ end }}
