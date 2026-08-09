@@ -136,6 +136,9 @@ footer {
   background-color: #101010;
   overflow: hidden;
   border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #camera video {
