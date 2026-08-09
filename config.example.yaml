@@ -1,0 +1,10 @@
+storage_type: "nop" # Options: "nop", "file", "gdrive"
+
+# Mandatory if storage_type: "file"
+# file_path: "tmp/img"
+
+# Mandatory if storage_type: "gdrive"
+# gdrive_credentials_file: "doq-web-fab0b314f6ef.json"
+# gdrive_folder_id: "1ryBPnTJrb02B0e17LB8lwIUfBdL8etY0"
+
+port: ":8080"

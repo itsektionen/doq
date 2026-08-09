@@ -21,6 +21,7 @@ func (s *PhotoService) SavePhoto(ctx context.Context, imgBytes []byte, ext strin
 	filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
 	err := s.storage.Save(ctx, filename, bytes.NewReader(imgBytes))
 	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 	return filename, nil

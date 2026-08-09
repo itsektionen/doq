@@ -1,3 +1,5 @@
 tmp/
 doq
 .DS_Store
+config.yaml
+*.account.json

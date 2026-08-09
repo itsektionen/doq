@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 
@@ -75,12 +76,14 @@ func (h *PhotoHandler) parsePhoto(r *http.Request) ([]byte, string, error) {
 func (h *PhotoHandler) HandleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 	imgBytes, ext, err := h.parsePhoto(r)
 	if err != nil {
+		log.Printf("[HandleUploadPhoto] Parse error: %v", err)
 		_ = notify.NotifyError(w, r, "Failed to save photo")
 		return
 	}
 
 	_, err = h.photoService.SavePhoto(r.Context(), imgBytes, ext)
 	if err != nil {
+		log.Printf("[HandleUploadPhoto] SavePhoto error: %v", err)
 		_ = notify.NotifyError(w, r, "Failed to save photo")
 		return
 	}
