@@ -1,18 +1,27 @@
 {{ define "content" }}
-<div class="container">
-  <div class="content-body">
-    <a hx-boost="true" href="/">
-      <img
-        id="logo"
-        draggable="false"
-        width="180"
-        height="111"
-        src="/static/img/doq.png"
-      />
-    </a>
-    <p id="quote">{{ .Quote }}</p>
-    <a class="link-btn" href="/camera"> DOQ it up </a>
-  </div>
-  {{ template "layouts/fragments/footer" . }}
-</div>
+<section class="content">
+  <a hx-boost="true" href="/">
+    <img
+      style="margin-bottom: 4rem"
+      id="logo"
+      alt="DOQ"
+      draggable="false"
+      width="180"
+      height="111"
+      src="/static/img/doq.png"
+    />
+  </a>
+  <p>
+    DOQ makes sure that the Reception is immortalized and remembered by taking
+    photos.
+  </p>
+  <p>It is a noble mission, and we hereby invite <b>you</b> to help us out.</p>
+  <p>
+    On this site you&apos;ll find a camera which you can use to capture moments
+    during the Reception. The photos are then sent to DOQ, who will review them.
+    You can read more about this by clicking the privacy link in the footer.
+  </p>
+  <p>Click the button below to get started!</p>
+  <a id="camera-link" class="link-btn" href="/camera">{{ .Quote }}</a>
+</section>
 {{ end }}
