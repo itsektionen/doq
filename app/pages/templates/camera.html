@@ -14,13 +14,19 @@
   <!-- Hidden canvas used to capture the image frame -->
   <canvas id="photo-canvas" style="display: none"></canvas>
 
+  <p id="spinner" class="htmx-indicator">
+    <img src="/static/icon/loading.svg" width="48" height="48" />
+  </p>
+
   <!-- HTMX Form or Container -->
   <form
     id="photo-form"
     hx-post="/upload-photo"
     hx-target="#result"
     hx-swap="innerHTML"
+    hx-indicator=".htmx-indicator, #camera-feed"
     hx-encoding="multipart/form-data"
+    hx-disabled-elt="find button, find input"
   >
     <!-- Hidden input to store image data before sending -->
     <input type="hidden" name="photo" id="photo-data" />
