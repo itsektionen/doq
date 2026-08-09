@@ -37,6 +37,7 @@
   <body>
     {{ template "notifications" . }}
     <main>{{block "content" .}}{{end}}</main>
+    {{ template "layouts/fragments/footer" . }}
   </body>
 </html>
 {{ end }}
