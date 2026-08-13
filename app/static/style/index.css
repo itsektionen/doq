@@ -270,6 +270,151 @@ footer {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
+/* Photo Preview & Confirmation Styles */
+#photo-preview {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  border-radius: 2rem;
+  animation: photoPreviewFadeIn 0.2s ease-in-out;
+  transition: opacity 150ms ease;
+}
+
+#photo-preview.htmx-request {
+  opacity: 20%;
+}
+
+@keyframes photoPreviewFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.preview-badge {
+  position: absolute;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--foreground);
+  padding: 0.4rem 1.1rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: photoPreviewFadeIn 0.2s ease-in-out;
+}
+
+#confirmation-controls {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+  max-width: calc(100% - 2rem);
+  width: auto;
+  animation: confirmationSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes confirmationSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.confirm-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 3.25rem;
+  padding: 0 1.35rem;
+  border-radius: 2rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    box-shadow 0.15s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.confirm-action-btn.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.confirm-action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.confirm-action-btn.secondary:active {
+  transform: scale(0.96);
+}
+
+.confirm-action-btn.primary {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.confirm-action-btn.primary:hover {
+  opacity: 0.92;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.confirm-action-btn.primary:active {
+  transform: scale(0.96);
+}
+
+.confirm-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+#camera-wrapper.preview-mode #camera-button,
+#camera-wrapper.preview-mode #camera-switch {
+  display: none !important;
+}
+
 /* Notifications Container & Toast Styles */
 #notifications {
   position: fixed;

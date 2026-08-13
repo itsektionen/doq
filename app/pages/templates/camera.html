@@ -9,7 +9,16 @@
       src="/static/img/doq.png"
     />
   </a>
-  <div id="camera"></div>
+  <div id="camera">
+    <img
+      id="photo-preview"
+      style="display: none"
+      alt="Captured photo preview"
+    />
+    <div id="preview-badge" class="preview-badge" style="display: none">
+      <span>Confirm Photo</span>
+    </div>
+  </div>
 
   <!-- Hidden canvas used to capture the image frame -->
   <canvas id="photo-canvas" style="display: none"></canvas>
@@ -24,7 +33,7 @@
     hx-post="/upload-photo"
     hx-target="#result"
     hx-swap="innerHTML"
-    hx-indicator=".htmx-indicator, #camera-feed"
+    hx-indicator=".htmx-indicator, #camera-feed, #photo-preview"
     hx-encoding="multipart/form-data"
     hx-disabled-elt="find button, find input"
   >
@@ -34,8 +43,31 @@
     <button
       id="camera-button"
       type="button"
-      onclick="captureAndSend()"
+      onclick="capturePhoto()"
+      aria-label="Take photo"
     ></button>
+
+    <!-- Confirmation / Preview Action Controls -->
+    <div id="confirmation-controls" style="display: none">
+      <button
+        id="retake-button"
+        type="button"
+        class="confirm-action-btn secondary"
+        onclick="retakePhoto()"
+      >
+        <img src="/static/icon/undo.svg" width="20" height="20" alt="" />
+        <span>Retake</span>
+      </button>
+
+      <button
+        id="upload-button"
+        type="submit"
+        class="confirm-action-btn primary"
+      >
+        <img src="/static/icon/check.svg" width="20" height="20" alt="" />
+        <span>Upload Photo</span>
+      </button>
+    </div>
   </form>
 
   <div id="result"></div>
@@ -52,9 +84,11 @@
 <script>
   let currentStream = null;
   let currentFacingMode = "user";
+  let isPreviewMode = false;
 
   async function startCamera() {
     const cameraContainer = document.getElementById("camera");
+    const photoPreview = document.getElementById("photo-preview");
 
     if (currentStream) {
       currentStream.getTracks().forEach((track) => track.stop());
@@ -81,8 +115,10 @@
         videoElement.classList.add("environment");
       }
 
-      cameraContainer.innerHTML = "";
-      cameraContainer.appendChild(videoElement);
+      const existingVideo = document.getElementById("camera-feed");
+      if (existingVideo) existingVideo.remove();
+
+      cameraContainer.insertBefore(videoElement, photoPreview || null);
     } catch (error) {
       console.error("Camera access error:", error);
       cameraContainer.innerText =
@@ -91,34 +127,91 @@
   }
 
   async function switchCamera() {
+    if (isPreviewMode) return;
     currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
     await startCamera();
   }
 
-  function captureAndSend() {
+  function capturePhoto() {
     const video = document.getElementById("camera-feed");
     const canvas = document.getElementById("photo-canvas");
     const photoInput = document.getElementById("photo-data");
-    const form = document.getElementById("photo-form");
+    const photoPreview = document.getElementById("photo-preview");
+    const cameraWrapper = document.getElementById("camera-wrapper");
+    const confirmationControls = document.getElementById("confirmation-controls");
+    const previewBadge = document.getElementById("preview-badge");
 
-    if (!video) return;
+    if (!video || !video.videoWidth) return;
+
+    // Pause video stream frame
+    video.pause();
 
     // Set canvas dimensions to match video stream size
     canvas.width = video.videoWidth || 1280;
     canvas.height = video.videoHeight || 720;
 
-    // Draw the current video frame onto the canvas
+    // Draw frame onto canvas
     const context = canvas.getContext("2d");
+    if (currentFacingMode === "user") {
+      // Mirror canvas context for front camera preview
+      context.translate(canvas.width, 0);
+      context.scale(-1, 1);
+    }
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Convert canvas image to Base64 Data URL (JPEG format)
     const imageDataUrl = canvas.toDataURL("image/jpeg", 0.85);
 
-    // Set value into hidden input and trigger HTMX request
+    // Store value in hidden form input
     photoInput.value = imageDataUrl;
-    htmx.trigger(form, "submit");
+
+    // Set preview image source and display preview UI
+    photoPreview.src = imageDataUrl;
+    photoPreview.style.display = "block";
+    if (previewBadge) previewBadge.style.display = "flex";
+
+    video.style.display = "none";
+    cameraWrapper.classList.add("preview-mode");
+    confirmationControls.style.display = "flex";
+    isPreviewMode = true;
   }
 
-  document.addEventListener("DOMContentLoaded", startCamera);
+  function retakePhoto() {
+    const video = document.getElementById("camera-feed");
+    const photoInput = document.getElementById("photo-data");
+    const photoPreview = document.getElementById("photo-preview");
+    const cameraWrapper = document.getElementById("camera-wrapper");
+    const confirmationControls = document.getElementById("confirmation-controls");
+    const previewBadge = document.getElementById("preview-badge");
+
+    // Clear preview image and hidden input
+    photoInput.value = "";
+    photoPreview.src = "";
+    photoPreview.style.display = "none";
+    if (previewBadge) previewBadge.style.display = "none";
+
+    // Restore live camera feed and controls
+    if (video) {
+      video.style.display = "block";
+      video.play().catch(() => {});
+    }
+
+    cameraWrapper.classList.remove("preview-mode");
+    confirmationControls.style.display = "none";
+    isPreviewMode = false;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    startCamera();
+
+    const photoForm = document.getElementById("photo-form");
+    if (photoForm) {
+      photoForm.addEventListener("htmx:afterRequest", (evt) => {
+        if (evt.detail && evt.detail.successful) {
+          retakePhoto();
+        }
+      });
+    }
+  });
 </script>
 {{ end }}
